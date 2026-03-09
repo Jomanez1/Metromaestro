@@ -1,9 +1,8 @@
-
 [{
       "relation": ["delegate_permission/common.handle_all_urls"],
       "target": {
         "namespace": "android_app",
         "package_name": "io.github.jomanez1.twa",
-        "sha256_cert_fingerprints": ["B3:36:23:50:3D:44:85:69:91:3C:88:F0:AE:1E:DC:93:E2:54:C1:DC:AE:F0:CB:82:FD:1A:79:EF:CE:7C:4E:C3"]
+        "sha256_cert_fingerprints": ["79:31:CF:9C:E2:B7:FE:CE:92:0C:2F:18:B6:D5:D7:F9:33:5C:B4:3E:F6:C0:75:37:9B:70:58:C8:84:47:40:11"]
       }
     }]
