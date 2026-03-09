@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="manifest" href="manifest.json">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0a0a0e">
@@ -10,22 +11,76 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
 
 <script>
-const ADMOB_CONFIG={enabled:false,publisherId:'ca-pub-XXXXXXXXXX',bannerTopId:'ca-app-pub-XXXXXXXXXX/YYYYYYYYYY',bannerBottomId:'ca-app-pub-XXXXXXXXXX/ZZZZZZZZZZ',interstitialId:'ca-app-pub-XXXXXXXXXX/AAAAAAAAAA'};
-const IAP_CONFIG={enabled:true,price:'1.95€',productId:'metromaestro_pro_noads'};
-let isPro=false;
-function checkProStatus(){try{isPro=localStorage.getItem('metromaestro_pro')==='true';if(isPro){hideAllAds();showProBadge();}}catch(e){}}
-function hideAllAds(){const at=document.getElementById('adTop'),ab=document.getElementById('adBottom');if(at)at.style.display='none';if(ab)ab.style.display='none';}
-function showProBadge(){const b=document.createElement('div');b.className='pro-badge';b.innerHTML='⭐ PRO';document.body.appendChild(b);}
-function showPurchaseModal(){const m=document.createElement('div');m.id='purchaseModal';m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:10000;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s;';m.innerHTML=`<div style="background:linear-gradient(135deg,#1a1a20,#0a0a0e);border-radius:24px;padding:32px 24px;max-width:360px;width:90%;border:2px solid rgba(255,215,0,0.3);box-shadow:0 0 40px rgba(255,215,0,0.2);animation:slideUp 0.4s;"><div style="text-align:center;margin-bottom:24px;"><div style="font-size:48px;margin-bottom:12px;">⭐</div><div style="font-family:'Fredoka One',cursive;font-size:28px;background:linear-gradient(135deg,#ffd700,#ffed4e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;">MetroMaestro PRO</div><div style="color:#888;font-size:13px;line-height:1.6;">Disfruta sin interrupciones</div></div><div style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:16px;padding:20px;margin-bottom:24px;"><div style="font-size:13px;font-weight:700;color:#ffd700;margin-bottom:12px;">✓ Incluye:</div><div style="display:flex;flex-direction:column;gap:10px;"><div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#ccc;"><span style="color:#ffd700;">🚫</span><span>Sin anuncios</span></div><div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#ccc;"><span style="color:#ffd700;">⚡</span><span>Experiencia fluida</span></div><div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#ccc;"><span style="color:#ffd700;">♾️</span><span>Acceso de por vida</span></div></div></div><div style="text-align:center;margin-bottom:20px;"><div style="font-size:14px;color:#888;margin-bottom:6px;">Pago único</div><div style="font-family:'Fredoka One',cursive;font-size:48px;background:linear-gradient(135deg,#fff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">1.95€</div></div><button onclick="processPurchase()" style="width:100%;padding:16px;background:linear-gradient(135deg,#ffd700,#ffed4e);border:none;border-radius:12px;color:#000;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 20px rgba(255,215,0,0.4);">🛒 COMPRAR AHORA</button><button onclick="closePurchaseModal()" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#888;font-size:13px;font-weight:700;cursor:pointer;">Tal vez más tarde</button></div>`;document.body.appendChild(m);}
-function closePurchaseModal(){const m=document.getElementById('purchaseModal');if(m){m.style.animation='fadeOut 0.3s';setTimeout(()=>m.remove(),300);}}
-async function processPurchase(){const m=document.getElementById('purchaseModal'),btn=m.querySelector('button');btn.textContent='⏳ Procesando...';btn.disabled=true;try{await new Promise(r=>setTimeout(r,1500));localStorage.setItem('metromaestro_pro','true');isPro=true;hideAllAds();closePurchaseModal();showSuccessMessage();}catch(e){btn.textContent='❌ Error';btn.disabled=false;}}
-function showSuccessMessage(){const m=document.createElement('div');m.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#39e87a,#2ecc71);color:#fff;padding:24px 32px;border-radius:16px;font-size:16px;font-weight:800;z-index:10001;box-shadow:0 8px 32px rgba(57,232,122,0.4);animation:bounceIn 0.5s;text-align:center;';m.innerHTML='<div style="font-size:48px;margin-bottom:12px;">🎉</div><div>¡Bienvenido a PRO!</div>';document.body.appendChild(m);setTimeout(()=>{m.remove();showProBadge();location.reload();},2500);}
-function showRemoveAdsButton(){if(isPro)return;const b=document.createElement('div');b.style.cssText='position:fixed;bottom:80px;right:16px;background:linear-gradient(135deg,#ffd700,#ffed4e);padding:12px 20px;border-radius:20px;box-shadow:0 4px 20px rgba(255,215,0,0.5);cursor:pointer;z-index:999;animation:pulse 2s infinite;';b.innerHTML='<div style="display:flex;align-items:center;gap:8px;color:#000;font-weight:800;font-size:13px;"><span style="font-size:18px;">⭐</span><span>Quitar anuncios</span><span style="font-size:11px;background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:8px;">1.95€</span></div>';b.onclick=showPurchaseModal;document.body.appendChild(b);}
-let interstitialAdReady=false,interstitialActionCount=0;const ACTIONS_BEFORE_INTERSTITIAL=5;
-function initInterstitialAd(){if(!ADMOB_CONFIG.enabled||isPro)return;interstitialAdReady=true;}
-function showInterstitialAd(){if(!ADMOB_CONFIG.enabled||isPro)return;interstitialActionCount++;if(interstitialActionCount>=ACTIONS_BEFORE_INTERSTITIAL&&interstitialAdReady){showInterstitialPlaceholder();interstitialActionCount=0;interstitialAdReady=false;setTimeout(()=>initInterstitialAd(),1000);}}
-function showInterstitialPlaceholder(){const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;';o.innerHTML='<div style="background:#1a1a20;border-radius:20px;padding:30px;text-align:center;"><div style="font-size:14px;color:#888;margin-bottom:20px;">ANUNCIO</div><div style="width:300px;height:250px;background:#2a2a30;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><div style="color:#666;">Anuncio 300x250</div></div><button onclick="this.parentElement.parentElement.remove()" style="background:#ff2d9b;color:#fff;border:none;padding:12px 30px;border-radius:10px;font-weight:800;cursor:pointer;margin-bottom:12px;width:100%;">Cerrar (5)</button><button onclick="this.parentElement.parentElement.remove();showPurchaseModal();" style="background:linear-gradient(135deg,#ffd700,#ffed4e);color:#000;border:none;padding:10px 24px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer;width:100%;">⭐ Quitar anuncios - 1.95€</button></div>';document.body.appendChild(o);let c=5;const btn=o.querySelector('button'),i=setInterval(()=>{c--;btn.textContent=`Cerrar (${c})`;if(c<=0){clearInterval(i);btn.textContent='Cerrar';}},1000);}
-const s=document.createElement('style');s.textContent='@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes fadeOut{from{opacity:1}to{opacity:0}}@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}@keyframes bounceIn{0%{transform:translate(-50%,-50%) scale(0.3);opacity:0}50%{transform:translate(-50%,-50%) scale(1.05)}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}.pro-badge{position:fixed;top:10px;right:10px;background:linear-gradient(135deg,#ffd700,#ffed4e);color:#000;font-size:9px;font-weight:800;padding:4px 10px;border-radius:12px;z-index:1000;letter-spacing:1px;box-shadow:0 0 20px rgba(255,215,0,0.5);animation:pulse-gold 2s infinite;}@keyframes pulse-gold{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.5)}50%{box-shadow:0 0 30px rgba(255,215,0,0.8)}}';document.head.appendChild(s);
+// ═══════════════════════════════════════════════════════════════════
+// ⚙️ CONFIGURACIÓN ADMOB - Solo necesitas editar esta sección
+// ═══════════════════════════════════════════════════════════════════
+
+// 🔧 PASO 1: Cambia a TRUE cuando tengas tus IDs de AdMob reales
+const USE_PRODUCTION = false; // ← Cambia a: true
+
+// 🔧 PASO 2: Pon aquí tus IDs reales de AdMob (cuando los tengas)
+const ADMOB_PRODUCTION = {
+  publisherId: 'ca-pub-XXXXXXXXXX',              // ← TU PUBLISHER ID
+  bannerTopId: 'ca-app-pub-XXXXXXXXXX/1111111111', // ← TU BANNER SUPERIOR
+  bannerBottomId: 'ca-app-pub-XXXXXXXXXX/2222222222', // ← TU BANNER INFERIOR
+  interstitialId: 'ca-app-pub-XXXXXXXXXX/3333333333'  // ← TU INTERSTICIAL
+};
+
+// 🧪 IDs de prueba de Google (NO TOCAR - funcionan automáticamente)
+const ADMOB_TEST = {
+  publisherId: 'ca-app-pub-3940256099942544',
+  bannerTopId: 'ca-app-pub-3940256099942544/6300978111',
+  bannerBottomId: 'ca-app-pub-3940256099942544/6300978111',
+  interstitialId: 'ca-app-pub-3940256099942544/1033173712'
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// ⛔ NO TOCAR NADA DE AQUÍ HACIA ABAJO
+// ═══════════════════════════════════════════════════════════════════
+
+// Sistema automático de selección (TEST o PRODUCCIÓN)
+const ADMOB = USE_PRODUCTION ? ADMOB_PRODUCTION : ADMOB_TEST;
+
+// Interstitial Ad Manager
+let interstitialActionCount = 0;
+const ACTIONS_BEFORE_INTERSTITIAL = 5;
+
+function showInterstitialAd() {
+  interstitialActionCount++;
+  if (interstitialActionCount >= ACTIONS_BEFORE_INTERSTITIAL) {
+    showInterstitialPlaceholder();
+    interstitialActionCount = 0;
+  }
+}
+
+function showInterstitialPlaceholder() {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.innerHTML = `
+    <div style="background:#1a1a20;border-radius:20px;padding:30px;text-align:center;max-width:340px;">
+      <div style="font-size:14px;color:#888;margin-bottom:20px;">ANUNCIO</div>
+      <div style="width:300px;height:250px;background:#2a2a30;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <div style="color:#666;">Anuncio Intersticial 300x250</div>
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()" 
+              style="width:100%;background:#ff2d9b;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:800;cursor:pointer;font-size:15px;">
+        Cerrar (5)
+      </button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  
+  let countdown = 5;
+  const btn = overlay.querySelector('button');
+  const interval = setInterval(() => {
+    countdown--;
+    btn.textContent = `Cerrar (${countdown})`;
+    if (countdown <= 0) {
+      clearInterval(interval);
+      btn.textContent = 'Cerrar';
+    }
+  }, 1000);
+}
 </script>
 
 <style>
@@ -171,7 +226,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Nunito',sans-serif;min-he
 <body>
 
 <div class="ad-banner top" id="adTop">
-  <div>📢 Anuncio Banner Superior 320x50</div>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <div class="fl2" id="fl"></div>
@@ -382,10 +441,29 @@ body{background:var(--bg);color:var(--tx);font-family:'Nunito',sans-serif;min-he
 </div>
 
 <div class="ad-banner bottom" id="adBottom">
-  <div>📢 Anuncio Banner Inferior 320x50</div>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <script>
+// Inyectar script de AdMob dinámicamente
+(function() {
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADMOB.publisherId}`;
+  script.crossOrigin = 'anonymous';
+  document.head.appendChild(script);
+  
+  // Configurar data-ad-client en los banners
+  document.querySelectorAll('.adsbygoogle').forEach((ad, idx) => {
+    ad.setAttribute('data-ad-client', ADMOB.publisherId);
+    ad.setAttribute('data-ad-slot', idx === 0 ? ADMOB.bannerTopId.split('/')[1] : ADMOB.bannerBottomId.split('/')[1]);
+  });
+})();
+
 const TR={es:{m:"🥁 Metrónomo",t:"🎸 Afinador",ts:"Compás",sn:"Sonido de clic",pat:"RITMOS DE BATERÍA",sw:"Swing",rst:"RESET",kk:"Bombo",sk:"Caja",hk:"Hi-hat",sync:"⟳ Sincronizar",synced:"✓ Sincronizados",tp:{Larghissimo:"Larghissimo",Largo:"Largo",Larghetto:"Larghetto",Adagio:"Adagio",Andante:"Andante",Moderato:"Moderato",Allegretto:"Allegretto",Allegro:"Allegro",Vivace:"Vivace",Presto:"Presto",Prestissimo:"Prestissimo"},snd:{classic:"Clásico",wood:"Madera",bell:"Campana",click:"Clic",deep:"Grave",high:"Agudo"},dr:{none:"Sin batería",rock:"Rock",jazz:"Jazz",bossa:"Bossa Nova",reggae:"Reggae",funk:"Funk",blues:"Blues",waltz:"Vals",latin:"Latino",metal:"Metal",shuffle:"Shuffle"}},en:{m:"🥁 Metronome",t:"🎸 Tuner",ts:"Time Sig",sn:"Click Sound",pat:"DRUM RHYTHMS",sw:"Swing",rst:"RESET",kk:"Kick",sk:"Snare",hk:"Hi-hat",sync:"⟳ Sync",synced:"✓ Synced",tp:{Larghissimo:"Larghissimo",Largo:"Largo",Larghetto:"Larghetto",Adagio:"Adagio",Andante:"Andante",Moderato:"Moderato",Allegretto:"Allegretto",Allegro:"Allegro",Vivace:"Vivace",Presto:"Presto",Prestissimo:"Prestissimo"},snd:{classic:"Classic",wood:"Wood",bell:"Bell",click:"Click",deep:"Deep",high:"High"},dr:{none:"No Drums",rock:"Rock",jazz:"Jazz",bossa:"Bossa Nova",reggae:"Reggae",funk:"Funk",blues:"Blues",waltz:"Waltz",latin:"Latin",metal:"Metal",shuffle:"Shuffle"}},fr:{m:"🥁 Métronome",t:"🎸 Accordeur",ts:"Mesure",sn:"Son clic",pat:"RYTHMES BATTERIE",sw:"Swing",rst:"RESET",kk:"Grosse caisse",sk:"Caisse claire",hk:"Hi-hat",sync:"⟳ Sync",synced:"✓ Synchronisés",tp:{Larghissimo:"Larghissimo",Largo:"Largo",Larghetto:"Larghetto",Adagio:"Adagio",Andante:"Andante",Moderato:"Modéré",Allegretto:"Allegretto",Allegro:"Allegro",Vivace:"Vif",Presto:"Presto",Prestissimo:"Très vite"},snd:{classic:"Classique",wood:"Bois",bell:"Cloche",click:"Clic",deep:"Grave",high:"Aigu"},dr:{none:"Sans batterie",rock:"Rock",jazz:"Jazz",bossa:"Bossa Nova",reggae:"Reggae",funk:"Funk",blues:"Blues",waltz:"Valse",latin:"Latin",metal:"Metal",shuffle:"Shuffle"}},de:{m:"🥁 Metronom",t:"🎸 Stimmgerät",ts:"Taktart",sn:"Klick",pat:"SCHLAGZEUGRHYTHMEN",sw:"Swing",rst:"RESET",kk:"Bassdrum",sk:"Snare",hk:"Hi-hat",sync:"⟳ Sync",synced:"✓ Synchronisiert",tp:{Larghissimo:"Larghissimo",Largo:"Largo",Larghetto:"Larghetto",Adagio:"Adagio",Andante:"Andante",Moderato:"Mäßig",Allegretto:"Allegretto",Allegro:"Allegro",Vivace:"Lebhaft",Presto:"Presto",Prestissimo:"Sehr schnell"},snd:{classic:"Klassisch",wood:"Holz",bell:"Glocke",click:"Klick",deep:"Tief",high:"Hoch"},dr:{none:"Kein Schlagzeug",rock:"Rock",jazz:"Jazz",bossa:"Bossa Nova",reggae:"Reggae",funk:"Funk",blues:"Blues",waltz:"Walzer",latin:"Latein",metal:"Metal",shuffle:"Shuffle"}},it:{m:"🥁 Metronomo",t:"🎸 Accordatore",ts:"Metrica",sn:"Suono clic",pat:"RITMI BATTERIA",sw:"Swing",rst:"RESET",kk:"Cassa",sk:"Rullante",hk:"Hi-hat",sync:"⟳ Sync",synced:"✓ Sincronizzati",tp:{Larghissimo:"Larghissimo",Largo:"Largo",Larghetto:"Larghetto",Adagio:"Adagio",Andante:"Andante",Moderato:"Moderato",Allegretto:"Allegretto",Allegro:"Allegro",Vivace:"Vivace",Presto:"Presto",Prestissimo:"Prestissimo"},snd:{classic:"Classico",wood:"Legno",bell:"Campana",click:"Clic",deep:"Grave",high:"Acuto"},dr:{none:"Senza batteria",rock:"Rock",jazz:"Jazz",bossa:"Bossa Nova",reggae:"Reggae",funk:"Funk",blues:"Blues",waltz:"Valzer",latin:"Latino",metal:"Metal",shuffle:"Shuffle"}},pt:{m:"🥁 Metrônomo",t:"🎸 Afinador",ts:"Compasso",sn:"Som clique",pat:"RITMOS DE BATERIA",sw:"Swing",rst:"RESET",kk:"Bumbo",sk:"Caixa",hk:"Hi-hat",sync:"⟳ Sincronizar",synced:"✓ Sincronizados",tp:{Larghissimo:"Larghissimo",Largo:"Largo",Larghetto:"Larghetto",Adagio:"Adagio",Andante:"Andante",Moderato:"Moderato",Allegretto:"Allegretto",Allegro:"Allegro",Vivace:"Vivace",Presto:"Presto",Prestissimo:"Prestíssimo"},snd:{classic:"Clássico",wood:"Madeira",bell:"Sino",click:"Clique",deep:"Grave",high:"Agudo"},dr:{none:"Sem bateria",rock:"Rock",jazz:"Jazz",bossa:"Bossa Nova",reggae:"Reggae",funk:"Funk",blues:"Blues",waltz:"Valsa",latin:"Latino",metal:"Metal",shuffle:"Shuffle"}}};
 let L='es';
 function g(id){return document.getElementById(id);}
@@ -499,14 +577,8 @@ function initTuningSelector(){const container=g('tuningSelector');if(!container)
 
 function pFreq(freq){const c=gCtx(),now=c.currentTime,g2=c.createGain();g2.connect(MG);[1,2,3,4].forEach((h,i)=>{const o=c.createOscillator(),g3=c.createGain();o.type='sine';o.frequency.value=freq*h;g3.gain.setValueAtTime(0,now);g3.gain.linearRampToValueAtTime(0.13/(i+1),now+0.02);g3.gain.exponentialRampToValueAtTime(0.001,now+2);o.connect(g3);g3.connect(g2);o.start(now);o.stop(now+2.1);});}
 
-window.addEventListener('DOMContentLoaded',()=>{rBeats();rTSig();rSnd();rDrum();updTName();updDBpmUI();updSyncBar();updI();checkProStatus();initInterstitialAd();if(!isPro&&IAP_CONFIG.enabled){showRemoveAdsButton();}initTuningSelector();updateStringsDisplay(null);});
+window.addEventListener('DOMContentLoaded',()=>{rBeats();rTSig();rSnd();rDrum();updTName();updDBpmUI();updSyncBar();updI();initTuningSelector();updateStringsDisplay(null);});
 </script>
-  </script>
-  </script>
-     <script>
-  if (typeof navigator.serviceWorker !== 'undefined') {
-    navigator.serviceWorker.register('sw.js')
-  }
-</script>
+  
 </body>
 </html>
