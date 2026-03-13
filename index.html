@@ -43,7 +43,7 @@ const ADMOB = USE_PRODUCTION ? ADMOB_PRODUCTION : ADMOB_TEST;
 
 // Interstitial Ad Manager
 let interstitialActionCount = 0;
-const ACTIONS_BEFORE_INTERSTITIAL = 5;
+const ACTIONS_BEFORE_INTERSTITIAL = 4;
 
 function showInterstitialAd() {
   interstitialActionCount++;
@@ -295,6 +295,34 @@ body{background:var(--bg);color:var(--tx);font-family:'Nunito',sans-serif;min-he
   </div>
 </div>
 
+<div class="pn">
+  <div class="ph" onclick="togP('ts')">
+    <div class="ptw"><span class="pi">🎼</span><span class="pt" id="i-ts">Compás</span></div>
+    <span class="pa" id="pa-ts">▼</span>
+  </div>
+  <div class="pb" id="pb-ts"><div class="tsg" id="tsg"></div></div>
+</div>
+
+<div class="pn">
+  <div class="ph" onclick="togP('sn')">
+    <div class="ptw"><span class="pi">🔊</span><span class="pt" id="i-sn">Sonido de clic</span></div>
+    <span class="pa op" id="pa-sn">▼</span>
+  </div>
+  <div class="pb op" id="pb-sn">
+    <div class="sg" id="sgr"></div>
+    <div class="cr">
+      <span class="cic">🔈</span>
+      <input type="range" class="rs v" id="vsl" min="0" max="100" value="80" oninput="sVol(this.value)" style="--p:80%">
+      <span class="cic">🔊</span>
+    </div>
+    <div class="cr">
+      <span class="clb" id="i-sw">Swing</span>
+      <input type="range" class="rs sw" id="swsl" min="0" max="50" value="0" oninput="sSwing(this.value)" style="--p:0%">
+      <span class="cv" id="swv">0%</span>
+    </div>
+  </div>
+</div>
+
 <div class="sec-title">BATERÍA INDEPENDIENTE</div>
 <div class="drum-card">
   <div class="drum-title">🥁 BATERÍA</div>
@@ -329,34 +357,6 @@ body{background:var(--bg);color:var(--tx);font-family:'Nunito',sans-serif;min-he
 <div class="sync-bar">
   <div class="sync-info">Metro: <span id="si-m">120</span> · Batería: <span id="si-d">120</span></div>
   <button class="btn-sync" onclick="syncBpms()" id="syncBtn">⟳ <span id="i-sync">Sincronizar</span></button>
-</div>
-
-<div class="pn">
-  <div class="ph" onclick="togP('ts')">
-    <div class="ptw"><span class="pi">🎼</span><span class="pt" id="i-ts">Compás</span></div>
-    <span class="pa" id="pa-ts">▼</span>
-  </div>
-  <div class="pb" id="pb-ts"><div class="tsg" id="tsg"></div></div>
-</div>
-
-<div class="pn">
-  <div class="ph" onclick="togP('sn')">
-    <div class="ptw"><span class="pi">🔊</span><span class="pt" id="i-sn">Sonido de clic</span></div>
-    <span class="pa op" id="pa-sn">▼</span>
-  </div>
-  <div class="pb op" id="pb-sn">
-    <div class="sg" id="sgr"></div>
-    <div class="cr">
-      <span class="cic">🔈</span>
-      <input type="range" class="rs v" id="vsl" min="0" max="100" value="80" oninput="sVol(this.value)" style="--p:80%">
-      <span class="cic">🔊</span>
-    </div>
-    <div class="cr">
-      <span class="clb" id="i-sw">Swing</span>
-      <input type="range" class="rs sw" id="swsl" min="0" max="50" value="0" oninput="sSwing(this.value)" style="--p:0%">
-      <span class="cv" id="swv">0%</span>
-    </div>
-  </div>
 </div>
 
 <div class="pn pattern-panel">
@@ -545,7 +545,7 @@ function rstDrum(){if(dplay)togDrum();dbpm=120;drum='none';dstep=0;g('dswrap').s
 
 function togP(id){const pb2=g('pb-'+id),pa=g('pa-'+id),op=pb2.classList.contains('op');pb2.classList.toggle('op',!op);pa.classList.toggle('op',!op);}
 
-function showTab(t){if(play){stopMetro();play=false;g('pb').classList.remove('on');g('pic').innerHTML='<path d="M8 5v14l11-7z"/>';beat=0;rBeats();}if(dplay){stopDrum();dplay=false;g('dpb').classList.remove('on');g('dpic').innerHTML='<path d="M8 5v14l11-7z"/>';dstep=0;if(drum!=='none')rDSeq();}['m','t'].forEach(x=>{g('tc-'+x).classList.toggle('on',x===t);g('tab-'+x).classList.toggle('on',x===t);});}
+function showTab(t){if(play){stopMetro();play=false;g('pb').classList.remove('on');g('pic').innerHTML='<path d="M8 5v14l11-7z"/>';beat=0;rBeats();}if(dplay){stopDrum();dplay=false;g('dpb').classList.remove('on');g('dpic').innerHTML='<path d="M8 5v14l11-7z"/>';dstep=0;if(drum!=='none')rDSeq();}['m','t'].forEach(x=>{g('tc-'+x).classList.toggle('on',x===t);g('tab-'+x).classList.toggle('on',x===t);});showInterstitialAd();}
 
 const TUNINGS_CONFIG={guitar_std:{name:'Guitarra Estándar',strings:[{n:'E',f:82.41},{n:'A',f:110},{n:'D',f:146.83},{n:'G',f:196},{n:'B',f:246.94},{n:'E',f:329.63}]},guitar_drop_d:{name:'Drop D',strings:[{n:'D',f:73.42},{n:'A',f:110},{n:'D',f:146.83},{n:'G',f:196},{n:'B',f:246.94},{n:'E',f:329.63}]},bass_std:{name:'Bajo 4c',strings:[{n:'E',f:41.2},{n:'A',f:55},{n:'D',f:73.42},{n:'G',f:98}]},ukulele:{name:'Ukulele',strings:[{n:'G',f:392},{n:'C',f:261.63},{n:'E',f:329.63},{n:'A',f:440}]},violin:{name:'Violín',strings:[{n:'G',f:196},{n:'D',f:293.66},{n:'A',f:440},{n:'E',f:659.25}]}};
 
