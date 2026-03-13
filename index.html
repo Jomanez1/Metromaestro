@@ -545,7 +545,7 @@ function rstDrum(){if(dplay)togDrum();dbpm=120;drum='none';dstep=0;g('dswrap').s
 
 function togP(id){const pb2=g('pb-'+id),pa=g('pa-'+id),op=pb2.classList.contains('op');pb2.classList.toggle('op',!op);pa.classList.toggle('op',!op);}
 
-function showTab(t){if(play){stopMetro();play=false;g('pb').classList.remove('on');g('pic').innerHTML='<path d="M8 5v14l11-7z"/>';beat=0;rBeats();}if(dplay){stopDrum();dplay=false;g('dpb').classList.remove('on');g('dpic').innerHTML='<path d="M8 5v14l11-7z"/>';dstep=0;if(drum!=='none')rDSeq();}['m','t'].forEach(x=>{g('tc-'+x).classList.toggle('on',x===t);g('tab-'+x).classList.toggle('on',x===t);});showInterstitialAd();}
+function showTab(t){if(play){stopMetro();play=false;g('pb').classList.remove('on');g('pic').innerHTML='<path d="M8 5v14l11-7z"/>';beat=0;rBeats();}if(dplay){stopDrum();dplay=false;g('dpb').classList.remove('on');g('dpic').innerHTML='<path d="M8 5v14l11-7z"/>';dstep=0;if(drum!=='none')rDSeq();}['m','t'].forEach(x=>{g('tc-'+x).classList.toggle('on',x===t);g('tab-'+x).classList.toggle('on',x===t);});showInterstitialPlaceholder();}
 
 const TUNINGS_CONFIG={guitar_std:{name:'Guitarra Estándar',strings:[{n:'E',f:82.41},{n:'A',f:110},{n:'D',f:146.83},{n:'G',f:196},{n:'B',f:246.94},{n:'E',f:329.63}]},guitar_drop_d:{name:'Drop D',strings:[{n:'D',f:73.42},{n:'A',f:110},{n:'D',f:146.83},{n:'G',f:196},{n:'B',f:246.94},{n:'E',f:329.63}]},bass_std:{name:'Bajo 4c',strings:[{n:'E',f:41.2},{n:'A',f:55},{n:'D',f:73.42},{n:'G',f:98}]},ukulele:{name:'Ukulele',strings:[{n:'G',f:392},{n:'C',f:261.63},{n:'E',f:329.63},{n:'A',f:440}]},violin:{name:'Violín',strings:[{n:'G',f:196},{n:'D',f:293.66},{n:'A',f:440},{n:'E',f:659.25}]}};
 
@@ -577,7 +577,7 @@ function initTuningSelector(){const container=g('tuningSelector');if(!container)
 
 function pFreq(freq){const c=gCtx(),now=c.currentTime,g2=c.createGain();g2.connect(MG);[1,2,3,4].forEach((h,i)=>{const o=c.createOscillator(),g3=c.createGain();o.type='sine';o.frequency.value=freq*h;g3.gain.setValueAtTime(0,now);g3.gain.linearRampToValueAtTime(0.13/(i+1),now+0.02);g3.gain.exponentialRampToValueAtTime(0.001,now+2);o.connect(g3);g3.connect(g2);o.start(now);o.stop(now+2.1);});}
 
-window.addEventListener('DOMContentLoaded',()=>{rBeats();rTSig();rSnd();rDrum();updTName();updDBpmUI();updSyncBar();updI();initTuningSelector();updateStringsDisplay(null);});
+window.addEventListener('DOMContentLoaded',()=>{rBeats();rTSig();rSnd();rDrum();updTName();updDBpmUI();updSyncBar();updI();initTuningSelector();updateStringsDisplay(null);showInterstitialPlaceholder();});
 </script>
 <script>
   if (typeof navigator.serviceWorker !== 'undefined') {
@@ -586,4 +586,3 @@ window.addEventListener('DOMContentLoaded',()=>{rBeats();rTSig();rSnd();rDrum();
 </script>
 </body>
 </html>
-
