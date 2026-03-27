@@ -63,7 +63,7 @@ function showInterstitialPlaceholder() {
         <div style="color:#666;">Anuncio Intersticial 300x250</div>
       </div>
       <button onclick="this.parentElement.parentElement.remove()" 
-              style="width:100%;background:#ff2d9b;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:800;cursor:pointer;font-size:15px;">
+              style="width:100%;background:#ff2d9b;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:800;cursor:pointer;font-size:15px;pointer-events:none;opacity:0.5;">
         Cerrar (5)
       </button>
     </div>
@@ -78,6 +78,8 @@ function showInterstitialPlaceholder() {
     if (countdown <= 0) {
       clearInterval(interval);
       btn.textContent = 'Cerrar';
+      btn.style.pointerEvents = 'auto';
+      btn.style.opacity = '1';
     }
   }, 1000);
 }
