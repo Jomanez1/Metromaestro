@@ -34,6 +34,7 @@ const ADMOB_TEST = {
   interstitialId: 'ca-app-pub-3940256099942544/1033173712'
 };
 
+
 // ═══════════════════════════════════════════════════════════════════
 // ⛔ NO TOCAR NADA DE AQUÍ HACIA ABAJO
 // ═══════════════════════════════════════════════════════════════════
@@ -477,11 +478,54 @@ function gCtx(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)()
 
 function pClick(type,acc,when){const c=gCtx(),g2=c.createGain();g2.connect(MG);const t=when||c.currentTime;if(type==='classic'){const o=c.createOscillator();o.type='sine';o.frequency.setValueAtTime(acc?1800:1000,t);o.frequency.exponentialRampToValueAtTime(acc?600:400,t+0.05);g2.gain.setValueAtTime(acc?0.9:0.7,t);g2.gain.exponentialRampToValueAtTime(0.001,t+0.08);o.connect(g2);o.start(t);o.stop(t+0.1);}else if(type==='wood'){const b=c.createBuffer(1,c.sampleRate*0.05,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,8);const s=c.createBufferSource(),f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=acc?900:600;f.Q.value=8;s.buffer=b;s.connect(f);f.connect(g2);g2.gain.setValueAtTime(acc?1.2:0.9,t);g2.gain.exponentialRampToValueAtTime(0.001,t+0.08);s.start(t);}else if(type==='bell'){[acc?2000:1400,acc?2800:2000].forEach(fr=>{const o=c.createOscillator();o.type='sine';o.frequency.value=fr;g2.gain.setValueAtTime(0.4,t);g2.gain.exponentialRampToValueAtTime(0.001,t+0.7);o.connect(g2);o.start(t);o.stop(t+0.8);});}else if(type==='click'){const b=c.createBuffer(1,c.sampleRate*0.02,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);const s=c.createBufferSource();s.buffer=b;s.connect(g2);g2.gain.setValueAtTime(acc?1.5:1.0,t);s.start(t);}else if(type==='deep'){const o=c.createOscillator();o.type='triangle';o.frequency.setValueAtTime(acc?180:120,t);o.frequency.exponentialRampToValueAtTime(40,t+0.15);g2.gain.setValueAtTime(acc?1.2:0.9,t);g2.gain.exponentialRampToValueAtTime(0.001,t+0.2);o.connect(g2);o.start(t);o.stop(t+0.25);}else if(type==='high'){const o=c.createOscillator();o.type='square';o.frequency.setValueAtTime(acc?3000:2200,t);o.frequency.exponentialRampToValueAtTime(acc?1500:1000,t+0.03);g2.gain.setValueAtTime(acc?0.4:0.3,t);g2.gain.exponentialRampToValueAtTime(0.001,t+0.05);o.connect(g2);o.start(t);o.stop(t+0.06);}}
 
-function pKick(when){const c=gCtx();const sub=c.createOscillator(),subg=c.createGain();sub.type='sine';sub.frequency.setValueAtTime(55,when);sub.frequency.exponentialRampToValueAtTime(20,when+0.15);subg.gain.setValueAtTime(1.5,when);subg.gain.exponentialRampToValueAtTime(0.001,when+0.5);sub.connect(subg);subg.connect(MG);sub.start(when);sub.stop(when+0.55);const o1=c.createOscillator(),o2=c.createOscillator(),bg=c.createGain();o1.type='sine';o2.type='triangle';o1.frequency.setValueAtTime(130,when);o1.frequency.exponentialRampToValueAtTime(50,when+0.1);o2.frequency.setValueAtTime(190,when);o2.frequency.exponentialRampToValueAtTime(65,when+0.1);bg.gain.setValueAtTime(1.1,when);bg.gain.exponentialRampToValueAtTime(0.001,when+0.4);o1.connect(bg);o2.connect(bg);bg.connect(MG);o1.start(when);o2.start(when);o1.stop(when+0.45);o2.stop(when+0.45);const att=c.createOscillator(),attg=c.createGain();att.type='triangle';att.frequency.setValueAtTime(900,when);att.frequency.exponentialRampToValueAtTime(250,when+0.01);attg.gain.setValueAtTime(0.7,when);attg.gain.exponentialRampToValueAtTime(0.001,when+0.03);att.connect(attg);attg.connect(MG);att.start(when);att.stop(when+0.04);const nb=c.createBuffer(1,c.sampleRate*0.015,c.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*Math.pow(1-i/nd.length,8);const ns=c.createBufferSource(),nf=c.createBiquadFilter(),ng=c.createGain();nf.type='bandpass';nf.frequency.value=450;nf.Q.value=2;ns.buffer=nb;ng.gain.setValueAtTime(0.6,when);ng.gain.exponentialRampToValueAtTime(0.001,when+0.015);ns.connect(nf);nf.connect(ng);ng.connect(MG);ns.start(when);}
+// ═══════════════════════════════════════════════════════════════════
+// 🥁 SAMPLES DE BATERÍA REALISTAS
+// Necesitas estos 3 archivos en la misma carpeta que index.html:
+//   kick.mp3 | snare.mp3 | hihat.mp3
+// ═══════════════════════════════════════════════════════════════════
 
-function pSnare(when){const c=gCtx();const low=c.createOscillator(),lowg=c.createGain();low.type='triangle';low.frequency.value=130;lowg.gain.setValueAtTime(0.7,when);lowg.gain.exponentialRampToValueAtTime(0.001,when+0.08);low.connect(lowg);lowg.connect(MG);low.start(when);low.stop(when+0.1);const o1=c.createOscillator(),o2=c.createOscillator(),o3=c.createOscillator(),bg=c.createGain();o1.type='triangle';o2.type='triangle';o3.type='sine';o1.frequency.value=190;o2.frequency.value=350;o3.frequency.value=480;bg.gain.setValueAtTime(0.6,when);bg.gain.exponentialRampToValueAtTime(0.001,when+0.1);o1.connect(bg);o2.connect(bg);o3.connect(bg);bg.connect(MG);o1.start(when);o2.start(when);o3.start(when);o1.stop(when+0.12);o2.stop(when+0.12);o3.stop(when+0.12);const nb=c.createBuffer(1,c.sampleRate*0.23,c.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*Math.pow(1-i/nd.length,1.4);const ns=c.createBufferSource(),f1=c.createBiquadFilter(),f2=c.createBiquadFilter(),ng=c.createGain();f1.type='highpass';f1.frequency.value=850;f1.Q.value=0.8;f2.type='peaking';f2.frequency.value=3000;f2.Q.value=1;f2.gain.value=7;ns.buffer=nb;ng.gain.setValueAtTime(1.0,when);ng.gain.exponentialRampToValueAtTime(0.001,when+0.19);ns.connect(f1);f1.connect(f2);f2.connect(ng);ng.connect(MG);ns.start(when);const stick=c.createOscillator(),sg=c.createGain();stick.type='square';stick.frequency.setValueAtTime(3200,when);stick.frequency.exponentialRampToValueAtTime(850,when+0.005);sg.gain.setValueAtTime(0.35,when);sg.gain.exponentialRampToValueAtTime(0.001,when+0.01);stick.connect(sg);sg.connect(MG);stick.start(when);stick.stop(when+0.015);}
+const drumBuffers = { kick: null, snare: null, hihat: null };
 
-function pHat(when){const c=gCtx();const lowFreqs=[900,1300,1700];lowFreqs.forEach((f,i)=>{const osc=c.createOscillator(),og=c.createGain();osc.type='square';osc.frequency.value=f;og.gain.setValueAtTime(0.09/(i+1),when);og.gain.exponentialRampToValueAtTime(0.001,when+0.03);osc.connect(og);og.connect(MG);osc.start(when);osc.stop(when+0.04);});const midFreqs=[3000,3900,4800,5700];midFreqs.forEach((f,i)=>{const osc=c.createOscillator(),og=c.createGain();osc.type='square';osc.frequency.value=f;og.gain.setValueAtTime(0.06/(i+1),when);og.gain.exponentialRampToValueAtTime(0.001,when+0.035);osc.connect(og);og.connect(MG);osc.start(when);osc.stop(when+0.04);});const hiFreqs=[7500,9200,10800,12500];hiFreqs.forEach((f,i)=>{const osc=c.createOscillator(),og=c.createGain();osc.type='square';osc.frequency.value=f;og.gain.setValueAtTime(0.05/(i+1),when);og.gain.exponentialRampToValueAtTime(0.001,when+0.04);osc.connect(og);og.connect(MG);osc.start(when);osc.stop(when+0.045);});const nb=c.createBuffer(1,c.sampleRate*0.05,c.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*Math.pow(1-i/nd.length,3.5);const ns=c.createBufferSource(),f1=c.createBiquadFilter(),f2=c.createBiquadFilter(),ng=c.createGain();f1.type='highpass';f1.frequency.value=6500;f1.Q.value=0.7;f2.type='peaking';f2.frequency.value=9500;f2.Q.value=1;f2.gain.value=4;ns.buffer=nb;ng.gain.setValueAtTime(0.45,when);ng.gain.exponentialRampToValueAtTime(0.001,when+0.04);ns.connect(f1);f1.connect(f2);f2.connect(ng);ng.connect(MG);ns.start(when);}
+async function loadDrumSamples() {
+  const c = gCtx();
+  const files = { kick: 'kick.mp3', snare: 'snare.mp3', hihat: 'hihat.mp3' };
+  for (const [name, file] of Object.entries(files)) {
+    try {
+      const res = await fetch(file);
+      const arr = await res.arrayBuffer();
+      drumBuffers[name] = await c.decodeAudioData(arr);
+    } catch(e) { console.warn('No se pudo cargar ' + file + ', usando síntesis.'); }
+  }
+}
+
+function playSample(buffer, when, gainVal) {
+  if (!buffer) return false;
+  const c = gCtx(), src = c.createBufferSource(), g2 = c.createGain();
+  src.buffer = buffer;
+  g2.gain.value = gainVal !== undefined ? gainVal : vol;
+  src.connect(g2); g2.connect(MG);
+  src.start(when);
+  return true;
+}
+
+function pKick(when) {
+  if (playSample(drumBuffers.kick, when, vol)) return;
+  // Fallback síntesis
+  const c=gCtx();const sub=c.createOscillator(),subg=c.createGain();sub.type='sine';sub.frequency.setValueAtTime(55,when);sub.frequency.exponentialRampToValueAtTime(20,when+0.15);subg.gain.setValueAtTime(1.5,when);subg.gain.exponentialRampToValueAtTime(0.001,when+0.5);sub.connect(subg);subg.connect(MG);sub.start(when);sub.stop(when+0.55);
+}
+
+function pSnare(when) {
+  if (playSample(drumBuffers.snare, when, vol)) return;
+  // Fallback síntesis
+  const c=gCtx();const nb=c.createBuffer(1,c.sampleRate*0.23,c.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*Math.pow(1-i/nd.length,1.4);const ns=c.createBufferSource(),f1=c.createBiquadFilter(),ng=c.createGain();f1.type='highpass';f1.frequency.value=850;ns.buffer=nb;ng.gain.setValueAtTime(1.0,when);ng.gain.exponentialRampToValueAtTime(0.001,when+0.19);ns.connect(f1);f1.connect(ng);ng.connect(MG);ns.start(when);
+}
+
+function pHat(when) {
+  if (playSample(drumBuffers.hihat, when, vol * 0.7)) return;
+  // Fallback síntesis
+  const c=gCtx();const nb=c.createBuffer(1,c.sampleRate*0.05,c.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*Math.pow(1-i/nd.length,3.5);const ns=c.createBufferSource(),f1=c.createBiquadFilter(),ng=c.createGain();f1.type='highpass';f1.frequency.value=6500;ns.buffer=nb;ng.gain.setValueAtTime(0.45,when);ng.gain.exponentialRampToValueAtTime(0.001,when+0.04);ns.connect(f1);f1.connect(ng);ng.connect(MG);ns.start(when);
+}
+
 
 const DP={none:null,rock:{k:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],s:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],h:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},jazz:{k:[1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0],s:[0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0],h:[1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1]},bossa:{k:[1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0],s:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],h:[1,0,1,1,0,1,0,1,1,0,1,1,0,1,0,1]},reggae:{k:[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],s:[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],h:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},funk:{k:[1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0],s:[0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1],h:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},blues:{k:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],s:[0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0],h:[1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1]},waltz:{k:[1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],s:[0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],h:[1,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0]},latin:{k:[1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0],s:[0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0],h:[1,1,0,1,0,1,1,0,1,1,0,1,0,1,1,0]},metal:{k:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],s:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],h:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},shuffle:{k:[1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0],s:[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],h:[1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1]}};
 const DM=[{id:'none',ic:'🚫'},{id:'rock',ic:'🤘'},{id:'jazz',ic:'🎷'},{id:'bossa',ic:'🌴'},{id:'reggae',ic:'🇯🇲'},{id:'funk',ic:'🕺'},{id:'blues',ic:'🎸'},{id:'waltz',ic:'💃'},{id:'latin',ic:'🪘'},{id:'metal',ic:'💀'},{id:'shuffle',ic:'🃏'}];
@@ -579,7 +623,7 @@ function initTuningSelector(){const container=g('tuningSelector');if(!container)
 
 function pFreq(freq){const c=gCtx(),now=c.currentTime,g2=c.createGain();g2.connect(MG);[1,2,3,4].forEach((h,i)=>{const o=c.createOscillator(),g3=c.createGain();o.type='sine';o.frequency.value=freq*h;g3.gain.setValueAtTime(0,now);g3.gain.linearRampToValueAtTime(0.13/(i+1),now+0.02);g3.gain.exponentialRampToValueAtTime(0.001,now+2);o.connect(g3);g3.connect(g2);o.start(now);o.stop(now+2.1);});}
 
-window.addEventListener('DOMContentLoaded',()=>{rBeats();rTSig();rSnd();rDrum();updTName();updDBpmUI();updSyncBar();updI();initTuningSelector();updateStringsDisplay(null);showInterstitialPlaceholder();});
+window.addEventListener('DOMContentLoaded',()=>{rBeats();rTSig();rSnd();rDrum();updTName();updDBpmUI();updSyncBar();updI();initTuningSelector();updateStringsDisplay(null);gCtx();loadDrumSamples();showInterstitialPlaceholder();});
 </script>
 <script>
   if (typeof navigator.serviceWorker !== 'undefined') {
